@@ -21,7 +21,6 @@ def network_check(func):
                 print ("network is broken! Please check the network!")
                 exit(0)
         except Exception as e:
-            print (e)
             print ('network is broken! Please check the network!')
             exit(0)
     return wrapped

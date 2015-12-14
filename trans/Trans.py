@@ -66,7 +66,7 @@ class Trans:
             link = baike_means['link']
             trans_text += '\t' + link + '\n'
         except Exception as e:
-            trans_text += 'no Baike content' if self.lang == 'en_US' else '没有百科内容'
+            trans_text += '\tno Baike content\n' if self.lang == 'en_US' else '\t没有百科内容\n'
         finally:
             return trans_text
 
@@ -111,11 +111,13 @@ class Trans:
                         trans_text += j + ' '
                     trans_text += '\n'
                 # 处理英英译内容
-                edict_trans = dict_result['edict']['item']
-                trans_text += '\033[33mEnglish >>>\033[0m\n'
-
-                for temp in edict_trans:
-                    trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
+                try:
+                    edict_trans = dict_result['edict']['item']
+                    trans_text += '\033[33mEnglish >>>\033[0m\n'
+                    for temp in edict_trans:
+                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
+                except Exception as e:
+                    pass
 
                 trans_text = self.solve_baike(dict_result, trans_text)
 
@@ -128,6 +130,7 @@ class Trans:
                         for k in j['means']:
                             trans_text += '\t' + k['word_mean'] + '\n'
                 trans_text = self.solve_baike(dict_result, trans_text)
+
         if self.lang == 'zh_CN':
             # 通过src和dst相同,判断没有该词的翻译,返回信息
             if src.lower() == dst.lower():
@@ -154,11 +157,13 @@ class Trans:
                         trans_text += j + ' '
                     trans_text += '\n'
                 # 处理英英译内容
-                edict_trans = dict_result['edict']['item']
-                trans_text += '-'*50 + '\n\033[33m英文释义 >>>\033[0m\n'
-
-                for temp in edict_trans:
-                    trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
+                try:
+                    edict_trans = dict_result['edict']['item']
+                    trans_text += '\033[33m英文释义 >>>\033[0m\n'
+                    for temp in edict_trans:
+                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
+                except Exception as e:
+                    pass
 
                 trans_text = self.solve_baike(dict_result, trans_text)
 
