@@ -3,9 +3,9 @@ __author__ = 'idbord'
 from setuptools import setup
 
 setup(
-    name='trans',
+    name='tsl',
     version="0.0.1",
-    keywords=('trans', 'baidu', 'dict', 'baidu api'),
+    keywords=('tsl', 'translate', 'baidu', 'dict', 'baidu api'),
     description="适用于在linux终端通过百度api查询单词或者翻译词句",
     license='MIT',
     author='idbord',
@@ -27,7 +27,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'trans=trans.Trans:run'
+            'tsl=trans.Trans:run'
         ]
     }
 )
