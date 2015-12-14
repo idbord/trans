@@ -4,7 +4,6 @@
     <list default="true" id="f3f34b18-cf4a-4a45-9270-df72413f2ec7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trans/Trans.py" afterPath="$PROJECT_DIR$/trans/Trans.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.py" afterPath="$PROJECT_DIR$/setup.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="trans.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,8 +33,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/trans/util.py" />
-        <option value="$PROJECT_DIR$/trans/Trans.py" />
         <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/trans/Trans.py" />
       </list>
     </option>
   </component>
@@ -134,8 +133,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="45" y="308" width="1321" height="772" extended-state="7" />
-    <editor active="true" />
+    <frame x="45" y="308" width="1321" height="772" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19135803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -194,8 +193,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/trans/Trans.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4008097">
-          <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
+        <state vertical-scroll-proportion="7.5789475">
+          <caret line="208" column="34" selection-start-line="208" selection-start-column="34" selection-end-line="208" selection-end-column="34" />
           <folding>
             <element signature="e#46#56#0" expanded="true" />
           </folding>

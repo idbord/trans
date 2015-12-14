@@ -204,4 +204,7 @@ def run():
     Trans(query).trans()
 
 if __name__ == '__main__':
-    run()
+    try:
+        run()
+    except KeyboardInterrupt as e:
+        pass
