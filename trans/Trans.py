@@ -11,7 +11,7 @@ import json
 import re
 import requests
 
-from util import network_check
+from trans.util import network_check
 
 class Trans:
     def __init__(self, word):
@@ -200,7 +200,7 @@ def run():
         return trans_help()
     query = ''
     for i in range(1, length):
-        query += argv[i]
+        query += argv[i] + ' '
     Trans(query).trans()
 
 if __name__ == '__main__':
