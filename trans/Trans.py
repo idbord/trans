@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 __author__ = 'idbord'
 import sys
-import imp
-imp.reload(sys)
 if sys.version[0:1] == '2':
+    import imp
+    imp.reload(sys)
     sys.setdefaultencoding('utf8')
 import locale
 import urllib
@@ -191,7 +191,7 @@ class Trans:
         print (output)
 
 def trans_help():
-    print ('tsl word')
+    print ('\t\033[33m INFO >>> print <tsl [word]> to get the translation of [word]\033[0m')
 
 def run():
     argv = sys.argv
@@ -200,7 +200,7 @@ def run():
         return trans_help()
     query = ''
     for i in range(1, length):
-        query += argv[i] + ' '
+        query += argv[i]
     Trans(query).trans()
 
 if __name__ == '__main__':
