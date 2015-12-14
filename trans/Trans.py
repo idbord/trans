@@ -1,36 +1,61 @@
 # -*- coding: utf-8 -*-
 __author__ = 'idbord'
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+import imp
+imp.reload(sys)
+if sys.version[0:1] == '2':
+    sys.setdefaultencoding('utf8')
 import locale
 import urllib
 import requests
 import json
+import re
 
-from util import network_check, get_trans_from
+from util import network_check
 
 class Trans:
     def __init__(self, word):
         self.word = word
         self.lang = locale.getdefaultlocale()[0]
+        self.py_version = sys.version[0:1]
+
+    # 根据输入的query字段判断from,从而匹配to
+    def get_trans_from(self):
+        word = self.word
+        zh_ptr = re.compile(u'[\u4e00-\u9fa5]+')
+        try:
+            # 匹配到数字时,直接按中文翻译到英文
+            match = re.search('[0-9]+', word)
+
+            if match is None:
+                # 没有匹配到数字时,进行中文匹配
+                match = zh_ptr.search(unicode(word) if self.py_version == '2' else word)
+        except Exception as e:
+            # 如果没有匹配到中文,则按英文翻译到中文
+            match = False
+        if match:
+            return 'zh'
+        return 'en'
 
     # 获取全部翻译结果,转换为json格式
     @network_check
     def get_trans_content(self, url):
-        switch_dict = {'en': 'zh', 'zh': 'en'}
-        trans_from = get_trans_from(self.word)
-        trans_to = switch_dict[trans_from]
-        body = {
-            'from': trans_from,
-            'to': trans_to,
-            'query': self.word,
-        }
-        body = urllib.urlencode(body)
-        url += '?' + body
-        result = requests.get(url)
-        content = json.loads(result.content)
-        return content
+        try:
+            switch_dict = {'en': 'zh', 'zh': 'en'}
+            trans_from = self.get_trans_from()
+            trans_to = switch_dict[trans_from]
+            body = {
+                'from': trans_from,
+                'to': trans_to,
+                'query': self.word,
+            }
+            body = urllib.urlencode(body) if self.py_version == '2' else urllib.parse.urlencode(body)
+            url += '?' + body
+            result = requests.get(url)
+            content = json.loads(result.content if self.py_version == '2' else result.content.decode('ascii'))
+            return content
+        except Exception as e:
+            exit(0)
 
     def solve_baike(self, dict_result, trans_text):
         # 处理百科内容
@@ -63,7 +88,7 @@ class Trans:
         if self.lang == 'en_US':
             # 通过src和dst相同,判断没有该词的翻译,返回信息
             if src.lower() == dst.lower():
-                trans_text += '\n\t\033[33mWARNNING:\033[0m No translation for <{}>! Please check your input!'.format(trans_text)
+                trans_text += u'\n\t\033[33mWARNNING:\033[0m No translation for <{}>! Please check your input!\n'.format(trans_text)
                 return self.solve_output(output, trans_text)
 
             # 检查是否有simple_means,没有则返回simple_data的数据
@@ -158,10 +183,10 @@ class Trans:
         url = 'http://fanyi.baidu.com/v2transapi'
         content = self.get_trans_content(url)
         output = self.parse_content(content)
-        print output
+        print (output)
 
 def trans_help():
-    print 'tsl word'
+    print ('tsl word')
 
 def run():
     argv = sys.argv
