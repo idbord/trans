@@ -161,7 +161,7 @@ class Trans:
         print output
 
 def trans_help():
-    print 'trans word'
+    print 'tsl word'
 
 def run():
     argv = sys.argv
