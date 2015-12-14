@@ -7,9 +7,9 @@ if sys.version[0:1] == '2':
     sys.setdefaultencoding('utf8')
 import locale
 import urllib
-import requests
 import json
 import re
+import requests
 
 from util import network_check
 
@@ -87,7 +87,7 @@ class Trans:
         # 判断系统语言
         if self.lang == 'en_US':
             # 通过src和dst相同,判断没有该词的翻译,返回信息
-            if src.lower() == dst.lower():
+            if src == dst:
                 trans_text += u'\n\t\033[33mWARNNING:\033[0m No translation for <{}>! Please check your input!\n'.format(trans_text)
                 return self.solve_output(output, trans_text)
 

@@ -15,7 +15,7 @@ setup(
         'trans'
     ],
     install_requires=[
-
+        'requests>=2.2.1'
     ],
     platforms="linux",
     classifiers=[
