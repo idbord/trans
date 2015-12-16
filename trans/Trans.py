@@ -161,7 +161,7 @@ class Trans:
                     edict_trans = dict_result['edict']['item']
                     trans_text += '\033[33m英文释义 >>>\033[0m\n'
                     for temp in edict_trans:
-                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
+                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0]
                 except Exception as e:
                     pass
 
@@ -188,10 +188,15 @@ class Trans:
         url = 'http://fanyi.baidu.com/v2transapi'
         content = self.get_trans_content(url)
         output = self.parse_content(content)
-        print (output)
+        print(output)
+
 
 def trans_help():
-    print ('\t\033[33m INFO >>> print <tsl [word]> to get the translation of [word]\033[0m')
+    output = '\033[33mINFO >>> print <tsl [word]> to get the translation of [word]\033[0m'
+    output += '\n\033[33mExample >>> \033[0m'
+    output += '\n\ttsl she\n' + '+'*50 + '\n******* us.[ʃi]' + '\n\tuk.[ʃi]' + '\n\033[33mChinese >>>\033[0m' + '\n\tpron. 她，它' + '\n\033[33mBaidu Baike >>>\033[0m' + '\n\thttp://baike.baidu.com/subview/3187/3187.htm\n' + '+'*50
+    print(output)
+
 
 def run():
     argv = sys.argv
