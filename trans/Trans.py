@@ -57,18 +57,18 @@ class Trans:
         except Exception as e:
             exit(0)
 
-    def solve_baike(self, dict_result, trans_text):
-        # 处理百科内容
-        temp = '\033[33m{} >>>\033[0m\n'
-        trans_text += temp.format('Baidu Baike') if self.lang == 'en_US' else temp.format('百度百科')
-        try:
-            baike_means = dict_result['baike_means']
-            link = baike_means['link']
-            trans_text += '\t' + link + '\n'
-        except Exception as e:
-            trans_text += '\tno Baike content\n' if self.lang == 'en_US' else '\t没有百科内容\n'
-        finally:
-            return trans_text
+    # def solve_baike(self, dict_result, trans_text):
+    #     # 处理百科内容
+    #     temp = '\n\033[33m{} >>>\033[0m\n'
+    #     trans_text += temp.format('Baidu Baike') if self.lang == 'en_US' else temp.format('百度百科')
+    #     try:
+    #         baike_means = dict_result['baike_means']
+    #         link = baike_means['link']
+    #         trans_text += '\t' + link + '\n'
+    #     except Exception as e:
+    #         trans_text += '\tno Baike content\n' if self.lang == 'en_US' else '\t没有百科内容\n'
+    #     finally:
+    #         return trans_text
 
     def parse_content(self, content):
         trans_result = content['trans_result']
@@ -96,7 +96,6 @@ class Trans:
                 simple_means = dict_result['simple_means']
             except Exception as e:
                 trans_text += '\n\033[33mSimple Result >>>\033[0m\n' + '\t' + dst + '\n'
-                trans_text = self.solve_baike(dict_result, trans_text)
                 return self.solve_output(output, trans_text)
 
             if trans_from == 'en':
@@ -119,8 +118,6 @@ class Trans:
                 except Exception as e:
                     pass
 
-                trans_text = self.solve_baike(dict_result, trans_text)
-
             elif trans_from == 'zh':
                 simple_trans = simple_means['symbols']
                 for i in simple_trans:
@@ -129,7 +126,6 @@ class Trans:
                     for j in i['parts']:
                         for k in j['means']:
                             trans_text += '\t' + k['word_mean'] + '\n'
-                trans_text = self.solve_baike(dict_result, trans_text)
 
         if self.lang == 'zh_CN':
             # 通过src和dst相同,判断没有该词的翻译,返回信息
@@ -142,7 +138,6 @@ class Trans:
                 simple_means = dict_result['simple_means']
             except Exception as e:
                 trans_text += '\n\033[33m简单翻译 >>>\033[0m\n' + '\t' + dst + '\n'
-                trans_text = self.solve_baike(dict_result, trans_text)
                 return self.solve_output(output, trans_text)
 
             if trans_from == 'en':
@@ -161,11 +156,9 @@ class Trans:
                     edict_trans = dict_result['edict']['item']
                     trans_text += '\033[33m英文释义 >>>\033[0m\n'
                     for temp in edict_trans:
-                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0]
+                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
                 except Exception as e:
                     pass
-
-                trans_text = self.solve_baike(dict_result, trans_text)
 
             elif trans_from == 'zh':
                 simple_trans = simple_means['symbols']
@@ -175,13 +168,11 @@ class Trans:
                     for j in i['parts']:
                         for k in j['means']:
                             trans_text += '\t' + k['word_mean'] + '\n'
-                trans_text = self.solve_baike(dict_result, trans_text)
-
         return self.solve_output(output, trans_text)
 
     def solve_output(self, output, trans_text):
         output += trans_text
-        output += '+'*50 + '\n'
+        output += '+'*50
         return output
 
     def trans(self):
@@ -192,10 +183,7 @@ class Trans:
 
 
 def trans_help():
-    output = '\033[33mINFO >>> print <tsl [word]> to get the translation of [word]\033[0m'
-    output += '\n\033[33mExample >>> \033[0m'
-    output += '\n\ttsl she\n' + '+'*50 + '\n******* us.[ʃi]' + '\n\tuk.[ʃi]' + '\n\033[33mChinese >>>\033[0m' + '\n\tpron. 她，它' + '\n\033[33mBaidu Baike >>>\033[0m' + '\n\thttp://baike.baidu.com/subview/3187/3187.htm\n' + '+'*50
-    print(output)
+    Trans("her").trans()
 
 
 def run():

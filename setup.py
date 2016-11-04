@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='tsl',
-    version="1.0.7",
+    version="1.1.0",
     keywords=('tsl', 'translate', 'baidu', 'dict', 'baidu api'),
     description="tsl is ready. It is for translation work on linux platform and it can autoly translate words or article between Chinese and English. Also, it provides Baike category for extended need.",
     license='MIT',

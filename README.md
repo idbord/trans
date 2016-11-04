@@ -1,5 +1,5 @@
 # trans
-tsl is ready. It is for translation work on linux platform and it can autoly translate words or article between Chinese and English. Also, it provides Baike category for extended need.
+tsl is for translation work on linux platform and it can autoly translate words or article between Chinese and English.
 
 ### install
 
@@ -7,4 +7,11 @@ tsl is ready. It is for translation work on linux platform and it can autoly tra
 
 ### update
 
->sudo pip install tsl --upgrade
+> sudo pip install tsl --upgrade
+
+### use
+
+> tsl her
+
+### change log
+- 2016-11-04 remove baike support as it has changed on baidu api
