@@ -57,19 +57,6 @@ class Trans:
         except Exception as e:
             exit(0)
 
-    # def solve_baike(self, dict_result, trans_text):
-    #     # 处理百科内容
-    #     temp = '\n\033[33m{} >>>\033[0m\n'
-    #     trans_text += temp.format('Baidu Baike') if self.lang == 'en_US' else temp.format('百度百科')
-    #     try:
-    #         baike_means = dict_result['baike_means']
-    #         link = baike_means['link']
-    #         trans_text += '\t' + link + '\n'
-    #     except Exception as e:
-    #         trans_text += '\tno Baike content\n' if self.lang == 'en_US' else '\t没有百科内容\n'
-    #     finally:
-    #         return trans_text
-
     def parse_content(self, content):
         trans_result = content['trans_result']
         trans_from = trans_result['from']
@@ -84,90 +71,46 @@ class Trans:
         output = '+'*50 + '\n'
         trans_text = '\033[31;01m' + src + '\033[0m'
 
-        # 判断系统语言
-        if self.lang == 'en_US':
-            # 通过src和dst相同,判断没有该词的翻译,返回信息
-            if src == dst:
-                trans_text += u'\n\t\033[33mWARNNING:\033[0m No translation for <{}>! Please check your input!\n'.format(trans_text)
-                return self.solve_output(output, trans_text)
+        # 通过src和dst相同,判断没有该词的翻译,返回信息
+        if src.lower() == dst.lower():
+            trans_text += '\n\t\033[33m警告:\033[0m 没有找到 <{}> 的翻译! 请检查你输入的文字!\n'.format(trans_text)
+            return self.solve_output(output, trans_text)
 
-            # 检查是否有simple_means,没有则返回simple_data的数据
+        # 检查是否有simple_means,没有则返回simple_data的数据
+        try:
+            simple_means = dict_result['simple_means']
+        except Exception as e:
+            trans_text += '\n\033[33m简单翻译 >>>\033[0m\n' + '\t' + dst + '\n'
+            return self.solve_output(output, trans_text)
+
+        if trans_from == 'en':
+            simple_trans = simple_means['symbols'][0]
+            prefix = '\t'
+            trans_text += '\n' + '******* ' + 'us.[' + simple_trans['ph_am'] + ']\n' + prefix + 'uk.[' + simple_trans['ph_en'] + ']\n'
+            trans_text += '\033[33m中文释义 >>>\033[0m\n'
+            item = simple_trans['parts']
+            for i in item:
+                trans_text += prefix + i['part'] + ' '
+                for j in i['means']:
+                    trans_text += j + ' '
+                trans_text += '\n'
+            # 处理英英译内容
             try:
-                simple_means = dict_result['simple_means']
+                edict_trans = dict_result['edict']['item']
+                trans_text += '\033[33m英文释义 >>>\033[0m\n'
+                for temp in edict_trans:
+                    trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
             except Exception as e:
-                trans_text += '\n\033[33mSimple Result >>>\033[0m\n' + '\t' + dst + '\n'
-                return self.solve_output(output, trans_text)
+                pass
 
-            if trans_from == 'en':
-                simple_trans = simple_means['symbols'][0]
-                prefix = '\t'
-                trans_text += '\n' + '******* ' + 'us.[' + simple_trans['ph_am'] + ']\n' + prefix + 'uk.[' + simple_trans['ph_en'] + ']\n'
-                trans_text += '\033[33mChinese >>>\033[0m\n'
-                item = simple_trans['parts']
-                for i in item:
-                    trans_text += prefix + i['part'] + ' '
-                    for j in i['means']:
-                        trans_text += j + ' '
-                    trans_text += '\n'
-                # 处理英英译内容
-                try:
-                    edict_trans = dict_result['edict']['item']
-                    trans_text += '\033[33mEnglish >>>\033[0m\n'
-                    for temp in edict_trans:
-                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
-                except Exception as e:
-                    pass
-
-            elif trans_from == 'zh':
-                simple_trans = simple_means['symbols']
-                for i in simple_trans:
-                    trans_text += '\t[' + i['word_symbol'] + ']\n'
-                    trans_text += '\033[33mEnglish >>>\033[0m\n'
-                    for j in i['parts']:
-                        for k in j['means']:
-                            trans_text += '\t' + k['word_mean'] + '\n'
-
-        if self.lang == 'zh_CN':
-            # 通过src和dst相同,判断没有该词的翻译,返回信息
-            if src.lower() == dst.lower():
-                trans_text += '\n\t\033[33m警告:\033[0m 没有找到 <{}> 的翻译! 请检查你输入的文字!'.format(trans_text)
-                return self.solve_output(output, trans_text)
-
-            # 检查是否有simple_means,没有则返回simple_data的数据
-            try:
-                simple_means = dict_result['simple_means']
-            except Exception as e:
-                trans_text += '\n\033[33m简单翻译 >>>\033[0m\n' + '\t' + dst + '\n'
-                return self.solve_output(output, trans_text)
-
-            if trans_from == 'en':
-                simple_trans = simple_means['symbols'][0]
-                prefix = '\t'
-                trans_text += '\n' + '******* ' + 'us.[' + simple_trans['ph_am'] + ']\n' + prefix + 'uk.[' + simple_trans['ph_en'] + ']\n'
-                trans_text += '\033[33m中文释义 >>>\033[0m\n'
-                item = simple_trans['parts']
-                for i in item:
-                    trans_text += prefix + i['part'] + ' '
-                    for j in i['means']:
-                        trans_text += j + ' '
-                    trans_text += '\n'
-                # 处理英英译内容
-                try:
-                    edict_trans = dict_result['edict']['item']
-                    trans_text += '\033[33m英文释义 >>>\033[0m\n'
-                    for temp in edict_trans:
-                        trans_text += prefix + temp['pos'] + '. ' + temp['tr_group'][0]['tr'][0] + '\n'
-                except Exception as e:
-                    pass
-
-            elif trans_from == 'zh':
-                simple_trans = simple_means['symbols']
-                for i in simple_trans:
-                    trans_text += '\t[' + i['word_symbol'] + ']\n'
-                    trans_text += '\033[33m英文释义 >>>\033[0m\n'
-                    for j in i['parts']:
-                        for k in j['means']:
-                            trans_text += '\t' + k['word_mean'] + '\n'
+        elif trans_from == 'zh':
+            simple_trans = simple_means['symbols']
+            for i in simple_trans:
+                trans_text += '\t[' + i['word_symbol'] + ']\n'
+                trans_text += '\033[33m英文释义 >>>\033[0m\n'
+                for j in i['parts']:
+                    for k in j['means']:
+                        trans_text += '\t' + k['word_mean'] + '\n'
         return self.solve_output(output, trans_text)
 
     def solve_output(self, output, trans_text):
